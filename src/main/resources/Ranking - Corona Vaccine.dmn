@@ -1,0 +1,291 @@
+<dmn:definitions xmlns:dmn="http://www.omg.org/spec/DMN/20180521/MODEL/" xmlns="http://www.trisotech.com/definitions/_6ae1bf46-0321-4e4e-8265-9c0f57f45f06" xmlns:triso="http://www.trisotech.com/2015/triso/modeling" xmlns:dmndi="http://www.omg.org/spec/DMN/20180521/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:trisodmn="http://www.trisotech.com/2016/triso/dmn" xmlns:ns1="http://www.omg.org/spec/DMN/20180521/FEEL/" xmlns:tc="http://www.omg.org/spec/DMN/20160719/testcase" xmlns:drools="http://www.drools.org/kie/dmn/1.2" xmlns:openapi="https://openapis.org/omg/extension/1.0" xmlns:ns2="https://www.trisotech.com/spec/DMN/20191111/EXT/" xmlns:i18n="http://www.omg.org/spec/BPMN/non-normative/extensions/i18n/1.0" xmlns:rss="http://purl.org/rss/2.0/" xmlns:trisofeed="http://trisotech.com/feed" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="_6ae1bf46-0321-4e4e-8265-9c0f57f45f06" name="Ranking - Corona Vaccine" typeLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" namespace="http://www.trisotech.com/definitions/_6ae1bf46-0321-4e4e-8265-9c0f57f45f06">
+  <dmn:extensionElements/>
+  <dmn:itemDefinition id="_2B14CEA2-A0BA-4CAB-82E3-5702DDB117BF" name="tVaccine" isCollection="true">
+    <dmn:typeRef>string</dmn:typeRef>
+    <dmn:allowedValues id="_858E1CCB-DCE6-4097-B130-28AA34334F0E">
+      <dmn:text>"Gamaleya Scientific  Research Institute","Johnson &amp; Johson &amp; Janssen Pharmaticals","Moderna","Novavax","Pfizer &amp; BioNTech","Sinovac","University of Oxford &amp; AstraZeneca"</dmn:text>
+    </dmn:allowedValues>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_49B1E544-36E8-4C7E-9AD1-2E19D1946B9B" name="tVaccinedetails" isCollection="true">
+    <dmn:itemComponent id="_a05fc273-37cd-494b-9ad7-179b62932d3d" name="Name" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_083599ac-7f25-4f16-988f-e9fd7e6d84f7" name="Provider" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_a2622e3d-16c0-4429-9950-f57b6690c6b0" name="Type" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_f773a907-cca6-4805-870a-b6b679e13033" name="Effectiveness" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:inputData id="_21f782fb-90e0-448e-896f-26269fc8f86a" name="Vaccine List">
+    <dmn:extensionElements/>
+    <dmn:variable id="_efbcf286-c44f-4381-86ac-498cca7ce609" name="Vaccine List" typeRef="tVaccine"/>
+  </dmn:inputData>
+  <dmn:decision id="_b8687265-f460-48da-9fc0-270302b04242" name="Detailed list">
+    <dmn:extensionElements/>
+    <dmn:variable id="_7c5993cb-ddd2-4eed-9dab-e858669783ad" name="Detailed list" typeRef="tVaccinedetails"/>
+    <dmn:informationRequirement id="_223e31e5-fdb6-41ba-9633-35a9f238425d">
+      <dmn:requiredInput href="#_21f782fb-90e0-448e-896f-26269fc8f86a"/>
+    </dmn:informationRequirement>
+    <dmn:knowledgeRequirement id="_d031f668-31eb-47a6-9289-72982059bd77">
+      <dmn:requiredKnowledge href="#_9cc87121-456f-4366-83ab-2f63a6a5acc1"/>
+    </dmn:knowledgeRequirement>
+    <dmn:literalExpression id="_A6D5E794-D568-420A-9348-1BC97D04C1F0">
+      <dmn:text>for vaccine in Vaccine List return Vaccine Effectiveness(vaccine)</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+  <dmn:decision id="_0c328bfa-3ce3-4783-8b29-df5947f2bd3f" name="Ranked list">
+    <dmn:extensionElements/>
+    <dmn:variable id="_ab469e6d-5eeb-490b-bdfe-f4b1bc28a04c" name="Ranked list" typeRef="tVaccinedetails"/>
+    <dmn:informationRequirement id="_03628547-b7a6-4282-82e6-028f47d2e081">
+      <dmn:requiredDecision href="#_b8687265-f460-48da-9fc0-270302b04242"/>
+    </dmn:informationRequirement>
+    <dmn:context id="_21a3bdc3-ff07-4d17-998f-9ed21c2881e8" typeRef="tVaccinedetails">
+      <dmn:contextEntry>
+        <dmn:variable id="_5d3b703b-5f42-4b5c-932b-4d32e489fe27" name="Sorting Function" typeRef="Any"/>
+        <dmn:functionDefinition id="_e5caa0c2-7b07-4972-8a72-8c2cbb3ecd0c" kind="FEEL">
+          <dmn:formalParameter id="_be041167-d350-4612-9987-77389d97e487" name="x" typeRef="Any"/>
+          <dmn:formalParameter id="_7664d989-9795-46e7-8f9f-b2eb9aa14863" name="y" typeRef="Any"/>
+          <dmn:literalExpression id="_d1b114b6-3778-465d-b1a1-7d996d942024">
+            <dmn:text>x.Effectiveness &gt; y.Effectiveness</dmn:text>
+          </dmn:literalExpression>
+        </dmn:functionDefinition>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:literalExpression id="_37d1b023-0638-4166-8c66-9c0ffad8d5b1">
+          <dmn:text>sort( Detailed list, Sorting Function )</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+    </dmn:context>
+  </dmn:decision>
+  <dmn:businessKnowledgeModel id="_9cc87121-456f-4366-83ab-2f63a6a5acc1" name="Vaccine Effectiveness">
+    <dmn:extensionElements/>
+    <dmn:variable id="_3cefe9c2-97fc-4b32-8b54-747925b4bb1e" name="Vaccine Effectiveness" typeRef="Any"/>
+    <dmn:encapsulatedLogic id="_0efb020d-e0fe-4230-b56a-e1c970794140" typeRef="Any" kind="FEEL">
+      <dmn:formalParameter id="_ae118364-cf67-4baa-9acb-a2897d73c236" name="prv" typeRef="tVaccine"/>
+      <dmn:context id="_758f8526-8ee5-4bef-b067-382f275f041f" typeRef="Any">
+        <dmn:contextEntry>
+          <dmn:variable id="_02caa93e-8ff5-4386-bba7-7ccbae6e72c3" name="Vaccine details" typeRef="tVaccinedetails"/>
+          <dmn:relation id="_40966017-526b-4017-ba0f-7bbdaa0c4283">
+            <dmn:column id="_150907e7-f295-4301-8e45-4c065c940bfb" name="Name" typeRef="string"/>
+            <dmn:column id="_77801ec2-c98a-4f40-8cbf-99b0d64448b5" name="Provider" typeRef="string"/>
+            <dmn:column id="_4eb242f5-94e9-46e9-8226-1f4d8810d83c" name="Type" typeRef="string"/>
+            <dmn:column id="_56f8c3c8-29cf-4f98-a2b0-909fdd7bb41e" name="Effectiveness" typeRef="number"/>
+            <dmn:row id="_5787bd04-1101-42f3-aa8e-6e3ad93850af">
+              <dmn:literalExpression id="_2d982536-f2f1-4b3b-b7e9-e4801d7f705a">
+                <dmn:text>"BNT162b2"</dmn:text>
+              </dmn:literalExpression>
+              <dmn:literalExpression id="_63abd1f7-0500-40ff-8bca-4e30513fadf0">
+                <dmn:text>"Pfizer &amp; BioNTech"</dmn:text>
+              </dmn:literalExpression>
+              <dmn:literalExpression id="_992a5033-8c2e-4b00-84b3-5eb3cae52733">
+                <dmn:text>"RNA"</dmn:text>
+              </dmn:literalExpression>
+              <dmn:literalExpression id="_0b81c773-5891-47bb-9490-b8d5c36a7dd7">
+                <dmn:text>95</dmn:text>
+              </dmn:literalExpression>
+            </dmn:row>
+            <dmn:row id="_05dce749-8c9c-4eac-9d78-a233c6e55805">
+              <dmn:literalExpression id="_f857b2a0-0704-4256-a4b6-b0148ac3bb6e">
+                <dmn:text>"mRNA-1273"</dmn:text>
+              </dmn:literalExpression>
+              <dmn:literalExpression id="_5f0ffffa-4d5d-480a-acc2-563ca90663f7">
+                <dmn:text>"Moderna"</dmn:text>
+              </dmn:literalExpression>
+              <dmn:literalExpression id="_0b4ffa09-124f-45bd-bfca-be809d382a1c">
+                <dmn:text>"RNA"</dmn:text>
+              </dmn:literalExpression>
+              <dmn:literalExpression id="_491b0fb0-3d4d-4db0-9df0-174c77c275de">
+                <dmn:text>94</dmn:text>
+              </dmn:literalExpression>
+            </dmn:row>
+            <dmn:row id="_1dfee98d-0213-42b0-ab4a-31007f851191">
+              <dmn:literalExpression id="_f0476e5a-7f44-4f07-aa25-47c609e18859">
+                <dmn:text>"Gam-COVID-Vac Sputnik V"</dmn:text>
+              </dmn:literalExpression>
+              <dmn:literalExpression id="_8ad97cde-077c-423a-b74d-1a2cb95564d2">
+                <dmn:text>"Gamaleya Scientific  Research Institute"</dmn:text>
+              </dmn:literalExpression>
+              <dmn:literalExpression id="_5232793e-4f4a-4a96-9855-7c603435af2a">
+                <dmn:text>"Viral vector"</dmn:text>
+              </dmn:literalExpression>
+              <dmn:literalExpression id="_ed0927bb-c628-4076-9d49-9f5e5986b6d8">
+                <dmn:text>92</dmn:text>
+              </dmn:literalExpression>
+            </dmn:row>
+            <dmn:row id="_b3ca17d6-99ef-4e60-812d-0ffa2230148f">
+              <dmn:literalExpression id="_7f94e16b-7aa6-40df-8f85-d4d7a67a3c11">
+                <dmn:text>"NVX-CoV2373"</dmn:text>
+              </dmn:literalExpression>
+              <dmn:literalExpression id="_5229b090-9f08-4f86-a4ef-5b36858ad9ad">
+                <dmn:text>"Novavax"</dmn:text>
+              </dmn:literalExpression>
+              <dmn:literalExpression id="_14c6a916-37a9-440d-9f18-67893e733c3c">
+                <dmn:text>"Protein-based"</dmn:text>
+              </dmn:literalExpression>
+              <dmn:literalExpression id="_8b849927-fbc5-4709-b6fb-80a9a1d91851">
+                <dmn:text>89</dmn:text>
+              </dmn:literalExpression>
+            </dmn:row>
+            <dmn:row id="_c5f35c89-89fa-42d6-bf84-eee0fdd1b6c2">
+              <dmn:literalExpression id="_f9ff0343-2aac-4679-9547-8ae288c8799e">
+                <dmn:text>"ChAdOx1 nCOV-2019"</dmn:text>
+              </dmn:literalExpression>
+              <dmn:literalExpression id="_6ddef677-ed00-4ff2-9e96-ad1b002ae3ea">
+                <dmn:text>"University of Oxford &amp; AstraZeneca"</dmn:text>
+              </dmn:literalExpression>
+              <dmn:literalExpression id="_8237e4cb-be98-4da4-8f49-8510dd67ce07">
+                <dmn:text>"Viral vector"</dmn:text>
+              </dmn:literalExpression>
+              <dmn:literalExpression id="_0404e8aa-e1ad-487c-a039-4205f0fdd08c">
+                <dmn:text>70</dmn:text>
+              </dmn:literalExpression>
+            </dmn:row>
+            <dmn:row id="_9d720653-ca5c-431c-946b-b61fa6d14ad2">
+              <dmn:literalExpression id="_4b1827fd-5c1a-47ee-9c8e-f169c7c358b5">
+                <dmn:text>"JNJ-78436735"</dmn:text>
+              </dmn:literalExpression>
+              <dmn:literalExpression id="_cb06d80e-d071-4873-9f7b-ce27fea250af">
+                <dmn:text>"Johnson &amp; Johson &amp; Janssen Pharmaticals"</dmn:text>
+              </dmn:literalExpression>
+              <dmn:literalExpression id="_fc16d3d2-ad59-4859-9769-64a926da2299">
+                <dmn:text>"Viral vector"</dmn:text>
+              </dmn:literalExpression>
+              <dmn:literalExpression id="_6ffe8bad-05b6-4705-8e39-c59353b0df23">
+                <dmn:text>66</dmn:text>
+              </dmn:literalExpression>
+            </dmn:row>
+            <dmn:row id="_cc1bd5aa-3066-4742-b391-4c43a215239d">
+              <dmn:literalExpression id="_a46df769-ea6d-4a01-853b-e0da46ccb5d4">
+                <dmn:text>"Coronavac"</dmn:text>
+              </dmn:literalExpression>
+              <dmn:literalExpression id="_79d73be9-69fe-4739-a82f-a19b107b5e8b">
+                <dmn:text>"Sinovac"</dmn:text>
+              </dmn:literalExpression>
+              <dmn:literalExpression id="_6b726d42-2fd2-44b1-9b0d-ee0749a92d4e">
+                <dmn:text>"Inactivated virus"</dmn:text>
+              </dmn:literalExpression>
+              <dmn:literalExpression id="_135ec77e-a2fe-4cbf-8499-c1d0c64ee53b">
+                <dmn:text>50</dmn:text>
+              </dmn:literalExpression>
+            </dmn:row>
+          </dmn:relation>
+        </dmn:contextEntry>
+        <dmn:contextEntry>
+          <dmn:literalExpression id="_dfbd9026-5ae5-48b4-a2b6-267e8e86c0f4">
+            <dmn:text>Vaccine details[prv=Provider][1]</dmn:text>
+          </dmn:literalExpression>
+        </dmn:contextEntry>
+      </dmn:context>
+    </dmn:encapsulatedLogic>
+  </dmn:businessKnowledgeModel>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_ef63c43f-fb61-4d66-beac-27f626b127cd" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension xmlns:kie="http://www.drools.org/kie/dmn/1.2">
+          <kie:ComponentWidths dmnElementRef="_A6D5E794-D568-420A-9348-1BC97D04C1F0">
+            <kie:width>300</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_21a3bdc3-ff07-4d17-998f-9ed21c2881e8">
+            <kie:width>50</kie:width>
+            <kie:width>122</kie:width>
+            <kie:width>410</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_e5caa0c2-7b07-4972-8a72-8c2cbb3ecd0c">
+            <kie:width>50</kie:width>
+            <kie:width>340</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_d1b114b6-3778-465d-b1a1-7d996d942024">
+            <kie:width>340</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_37d1b023-0638-4166-8c66-9c0ffad8d5b1">
+            <kie:width>410</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_758f8526-8ee5-4bef-b067-382f275f041f"/>
+          <kie:ComponentWidths dmnElementRef="_40966017-526b-4017-ba0f-7bbdaa0c4283"/>
+          <kie:ComponentWidths dmnElementRef="_2d982536-f2f1-4b3b-b7e9-e4801d7f705a"/>
+          <kie:ComponentWidths dmnElementRef="_63abd1f7-0500-40ff-8bca-4e30513fadf0"/>
+          <kie:ComponentWidths dmnElementRef="_992a5033-8c2e-4b00-84b3-5eb3cae52733"/>
+          <kie:ComponentWidths dmnElementRef="_0b81c773-5891-47bb-9490-b8d5c36a7dd7"/>
+          <kie:ComponentWidths dmnElementRef="_f857b2a0-0704-4256-a4b6-b0148ac3bb6e"/>
+          <kie:ComponentWidths dmnElementRef="_5f0ffffa-4d5d-480a-acc2-563ca90663f7"/>
+          <kie:ComponentWidths dmnElementRef="_0b4ffa09-124f-45bd-bfca-be809d382a1c"/>
+          <kie:ComponentWidths dmnElementRef="_491b0fb0-3d4d-4db0-9df0-174c77c275de"/>
+          <kie:ComponentWidths dmnElementRef="_f0476e5a-7f44-4f07-aa25-47c609e18859"/>
+          <kie:ComponentWidths dmnElementRef="_8ad97cde-077c-423a-b74d-1a2cb95564d2"/>
+          <kie:ComponentWidths dmnElementRef="_5232793e-4f4a-4a96-9855-7c603435af2a"/>
+          <kie:ComponentWidths dmnElementRef="_ed0927bb-c628-4076-9d49-9f5e5986b6d8"/>
+          <kie:ComponentWidths dmnElementRef="_7f94e16b-7aa6-40df-8f85-d4d7a67a3c11"/>
+          <kie:ComponentWidths dmnElementRef="_5229b090-9f08-4f86-a4ef-5b36858ad9ad"/>
+          <kie:ComponentWidths dmnElementRef="_14c6a916-37a9-440d-9f18-67893e733c3c"/>
+          <kie:ComponentWidths dmnElementRef="_8b849927-fbc5-4709-b6fb-80a9a1d91851"/>
+          <kie:ComponentWidths dmnElementRef="_f9ff0343-2aac-4679-9547-8ae288c8799e"/>
+          <kie:ComponentWidths dmnElementRef="_6ddef677-ed00-4ff2-9e96-ad1b002ae3ea"/>
+          <kie:ComponentWidths dmnElementRef="_8237e4cb-be98-4da4-8f49-8510dd67ce07"/>
+          <kie:ComponentWidths dmnElementRef="_0404e8aa-e1ad-487c-a039-4205f0fdd08c"/>
+          <kie:ComponentWidths dmnElementRef="_4b1827fd-5c1a-47ee-9c8e-f169c7c358b5"/>
+          <kie:ComponentWidths dmnElementRef="_cb06d80e-d071-4873-9f7b-ce27fea250af"/>
+          <kie:ComponentWidths dmnElementRef="_fc16d3d2-ad59-4859-9769-64a926da2299"/>
+          <kie:ComponentWidths dmnElementRef="_6ffe8bad-05b6-4705-8e39-c59353b0df23"/>
+          <kie:ComponentWidths dmnElementRef="_a46df769-ea6d-4a01-853b-e0da46ccb5d4"/>
+          <kie:ComponentWidths dmnElementRef="_79d73be9-69fe-4739-a82f-a19b107b5e8b"/>
+          <kie:ComponentWidths dmnElementRef="_6b726d42-2fd2-44b1-9b0d-ee0749a92d4e"/>
+          <kie:ComponentWidths dmnElementRef="_135ec77e-a2fe-4cbf-8499-c1d0c64ee53b"/>
+          <kie:ComponentWidths dmnElementRef="_dfbd9026-5ae5-48b4-a2b6-267e8e86c0f4"/>
+          <kie:ComponentWidths dmnElementRef="_0efb020d-e0fe-4230-b56a-e1c970794140"/>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="dmnshape-drg-_21f782fb-90e0-448e-896f-26269fc8f86a" dmnElementRef="_21f782fb-90e0-448e-896f-26269fc8f86a" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="58.75882911682129" y="385.99999618530273" width="135.48234176635742" height="60.00000762939453"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_b8687265-f460-48da-9fc0-270302b04242" dmnElementRef="_b8687265-f460-48da-9fc0-270302b04242" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="50" y="225" width="153" height="60"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_0c328bfa-3ce3-4783-8b29-df5947f2bd3f" dmnElementRef="_0c328bfa-3ce3-4783-8b29-df5947f2bd3f" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="50" y="64" width="153" height="60"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_9cc87121-456f-4366-83ab-2f63a6a5acc1" dmnElementRef="_9cc87121-456f-4366-83ab-2f63a6a5acc1" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="282" y="225" width="153" height="60"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="dmnedge-drg-_d031f668-31eb-47a6-9289-72982059bd77" dmnElementRef="_d031f668-31eb-47a6-9289-72982059bd77">
+        <di:waypoint x="283" y="255"/>
+        <di:waypoint x="203" y="255"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_223e31e5-fdb6-41ba-9633-35a9f238425d" dmnElementRef="_223e31e5-fdb6-41ba-9633-35a9f238425d">
+        <di:waypoint x="126.5" y="385.99999618530273"/>
+        <di:waypoint x="126.5" y="285"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_03628547-b7a6-4282-82e6-028f47d2e081" dmnElementRef="_03628547-b7a6-4282-82e6-028f47d2e081">
+        <di:waypoint x="126.5" y="225"/>
+        <di:waypoint x="126.5" y="124"/>
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>
